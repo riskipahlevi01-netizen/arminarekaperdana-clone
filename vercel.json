@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/berita-detail/:slug", 
+      "destination": "/berita-detail/:slug.html"
+    },
+    {
       "source": "/site/:slug", 
       "destination": "/site/:slug.html"
     }

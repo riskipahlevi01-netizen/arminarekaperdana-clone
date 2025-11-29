@@ -18,12 +18,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const basePath = (() => {
 		const pathname = window.location.pathname;
 
+		if (pathname.includes("/berita-detail/")) {
+			return "../../../";
+		}
 		if (pathname.includes("/site/")) {
 			return "../../../";
 		}
 
 		if (pathname.includes("/profil") ||
 			pathname.includes("/layanan") ||
+			pathname.includes("/galeri") ||
 			pathname.includes("/about-us")) {
 			return "..";
 		}
@@ -34,6 +38,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 	// Muat header dan footer
 	await loadComponent("header", `${basePath}/components/header.html`);
 	await loadComponent("footer", `${basePath}/components/footer.html`);
+
+	// Fungsi untuk mengambil data kurs terbaru
+	async function getKurs() {
+		try {
+			const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+			const data = await response.json();
+			const kurs = data.rates.IDR; // Ambil nilai tukar USD ke IDR
+			document.getElementById('kursValue').innerText = `Kurs: Rp. ${kurs.toFixed(0)}`;
+		} catch (error) {
+			console.error("Error fetching the exchange rate:", error);
+		}
+	}
+
+	// Jalankan fungsi kurs terbaru
+	window.onload = getKurs;
 
 });
 
